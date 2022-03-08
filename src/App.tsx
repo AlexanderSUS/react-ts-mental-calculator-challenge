@@ -1,8 +1,13 @@
 import React from 'react';
+import ButtonSet from './components/ButtonSet';
+import GameContainer from './components/GameContainer';
 
 function App() {
   return (
-    <div className="App" />
+    <>
+      <ButtonSet />
+      <GameContainer />
+    </>
   );
 }
 
