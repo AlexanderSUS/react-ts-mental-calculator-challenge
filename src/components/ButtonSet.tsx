@@ -15,32 +15,30 @@ export const OPERATIONS = {
 const operationSigns = Object.values(OPERATIONS);
 
 function ButtonSet() {
-  const data = getArguments();
-
   const dispatch = useDispatch();
 
   function loadSumGame() {
-    dispatch({ type: GameActionTypes.SUM, payload: data });
+    dispatch({ type: GameActionTypes.SUM, payload: getArguments() });
   }
 
   function loadSubtractGame() {
-    dispatch({ type: GameActionTypes.SUBTRACT, payload: data });
+    dispatch({ type: GameActionTypes.SUBTRACT, payload: getArguments() });
   }
 
   function loadMultiplyGame() {
-    dispatch({ type: GameActionTypes.MULTIPLY, payload: data });
+    dispatch({ type: GameActionTypes.MULTIPLY, payload: getArguments() });
   }
 
   function loadDivideGame() {
-    dispatch({ type: GameActionTypes.DIVIDE, payload: data });
+    dispatch({ type: GameActionTypes.DIVIDE, payload: getArguments() });
   }
 
   function loadDegreeGame() {
-    dispatch({ type: GameActionTypes.DEGREE, payload: data });
+    dispatch({ type: GameActionTypes.DEGREE, payload: getArguments() });
   }
 
   function loadRootGame() {
-    dispatch({ type: GameActionTypes.ROOT, payload: data });
+    dispatch({ type: GameActionTypes.ROOT, payload: getArguments() });
   }
 
   const helpers = [

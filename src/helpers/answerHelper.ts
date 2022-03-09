@@ -1,4 +1,4 @@
-export default function getAnswer(operation: string, ...args: number[]) {
+export default function getAnswer(operation: string, args: [number, number]) {
   switch (operation) {
     case '+':
       return args[0] + args[1];

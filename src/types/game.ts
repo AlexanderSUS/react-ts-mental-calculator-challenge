@@ -1,12 +1,9 @@
+export type Arguments = [number, number];
 export interface GameState {
   isGameChoosed: boolean;
   isPlayed: boolean;
-  numA: null | number;
-  numB: null | number;
+  args: Arguments;
   operation: null | string;
-  answer: number;
-  userAnswer: null | string;
-  isAnswerTrue: boolean;
 }
 
 export enum GameActionTypes {
@@ -16,34 +13,27 @@ export enum GameActionTypes {
   DIVIDE = 'DIVIDE',
   DEGREE = 'DEGREE',
   ROOT = 'ROOT',
-  SET_ANSWER = 'SET_ANSWER',
+  GET_ANSWER = 'GET_ANSWER',
   NEXT = 'NEXT',
   EXIT = 'EXIT',
-  DEFINE_IS_ANSWER_TRUE = 'DEFINE_IS_ANSWER_TRUE',
 }
 
 interface GameQuestionActions <T> {
   type: T;
-  payload: [number, number];
-}
-
-interface GameSetAnswerAction {
-  type: GameActionTypes.SET_ANSWER;
-  payload: string;
+  payload: Arguments;
 }
 
 interface GameNextAction {
   type: GameActionTypes.NEXT;
-  payload: [number, number];
+  payload: Arguments;
 }
 
 interface GameExitAction {
   type: GameActionTypes.EXIT;
 }
 
-interface GameDefineAnswerAction {
-  type: GameActionTypes.DEFINE_IS_ANSWER_TRUE,
-  payload: boolean,
+interface GameGetAnswerAction {
+  type: GameActionTypes.GET_ANSWER,
 }
 
 export type GameAction = GameQuestionActions<GameActionTypes.SUM>
@@ -52,7 +42,6 @@ export type GameAction = GameQuestionActions<GameActionTypes.SUM>
 | GameQuestionActions<GameActionTypes.DIVIDE>
 | GameQuestionActions<GameActionTypes.DEGREE>
 | GameQuestionActions<GameActionTypes.ROOT>
-| GameSetAnswerAction
 | GameNextAction
 | GameExitAction
-| GameDefineAnswerAction;
+| GameGetAnswerAction;

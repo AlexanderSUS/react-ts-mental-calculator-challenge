@@ -1,8 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import getArguments from '../helpers/getRandomArguments';
+import getAnswer from '../helpers/answerHelper';
 import useTyepedSelector from '../hooks/useTypedSelector';
 import { GameActionTypes } from '../types/game';
+import AnswerContainer from './AnswerContainer';
+import AnswerInputContainer from './AnswerInputContainer';
+import EscapeButton from './EscapeButton';
+import ExpressionContainer from './ExpressionContainer';
+import MainPage from './MainPage';
+
+export type InputRef = HTMLInputElement;
 
 // eslint-disable-next-line react/function-component-definition
 const GameContainer: React.FC = (): JSX.Element => {
@@ -13,82 +20,42 @@ const GameContainer: React.FC = (): JSX.Element => {
   const {
     isGameChoosed,
     isPlayed,
-    numA,
-    numB,
+    args,
     operation,
-    answer,
-    userAnswer,
-    isAnswerTrue,
   } = useTyepedSelector((s) => s.game);
+
+  const [userAnswer, setUserAnswer] = useState(0);
+  const [isUserAnswerTrue, setIsUserAnswerTrue] = useState(false);
+  const answer = getAnswer(operation as string, args);
 
   const checkAnswer = () => {
     if (ref.current?.value) {
-      dispatch({ type: GameActionTypes.SET_ANSWER, payload: ref.current.value });
-      console.log(answer, Number(userAnswer));
-      dispatch({
-        type: GameActionTypes.DEFINE_IS_ANSWER_TRUE,
-        payload: compareAnswers(answer, Number(userAnswer)),
-      });
-      console.log('answer is True', isAnswerTrue);
+      setUserAnswer(Number(ref.current.value));
+      dispatch({ type: GameActionTypes.GET_ANSWER });
     }
   };
 
-  const nextQuestion = () => {
-    dispatch({ type: GameActionTypes.NEXT, payload: getArguments() });
-  };
-
   useEffect(() => {
-    console.log('useEffect', userAnswer);
-  }, [userAnswer]);
+    setIsUserAnswerTrue(compareAnswers(answer, userAnswer));
+  }, [userAnswer, answer]);
 
   return (
     <>
-      { !isGameChoosed && <h1>Choose math operation</h1>}
-      { isGameChoosed && (
-      <span>
-        {numA}
-        {' '}
-        {operation}
-        {' '}
-        {numB}
-        {' '}
-        equals
-      </span>
-      )}
-      {(isGameChoosed && !isPlayed)
-        && (
-        <>
-          <input type="number" placeholder="your answer" ref={ref} />
-          <button type="button" onClick={checkAnswer}>Submit</button>
-        </>
-        )}
-      {(isPlayed && isAnswerTrue)
-           && (
-             <>
-               <span>
-                 {answer}
-               </span>
-               <h4>Success!</h4>
-               <div>
-                 Your Answer =
-                 {userAnswer}
-               </div>
-               <button type="button" onClick={nextQuestion}>Next</button>
-             </>
-           )}
-      {(isPlayed && !isAnswerTrue)
-           && (
-             <>
-               <span>
-                 {answer}
-               </span>
-               <div>
-                 Your Answer =
-                 {userAnswer}
-               </div>
-               <button type="button" onClick={nextQuestion}>Next</button>
-             </>
-           )}
+      <MainPage isGameChoosed={isGameChoosed} />
+      <ExpressionContainer args={args} operation={operation} isGameChoosed={isGameChoosed} />
+      <AnswerInputContainer
+        ref={ref}
+        checkAnswer={checkAnswer}
+        isGameChoosed={isGameChoosed}
+        isPlayed={isPlayed}
+      />
+      <AnswerContainer
+        isPlayed={isPlayed}
+        isUserAnswerTrue={isUserAnswerTrue}
+        answer={answer}
+        userAnswer={userAnswer}
+      />
+      <EscapeButton isGameChoosed={isGameChoosed} />
     </>
   );
 };
