@@ -7,7 +7,7 @@ import AnswerContainer from './AnswerContainer';
 import AnswerInputContainer from './AnswerInputContainer';
 import EscapeButton from './EscapeButton';
 import ExpressionContainer from './ExpressionContainer';
-import MainPage from './MainPage';
+import GameSelectLayout from './GameSelectLayout';
 
 export type InputRef = HTMLInputElement;
 
@@ -41,7 +41,7 @@ const GameContainer: React.FC = (): JSX.Element => {
 
   return (
     <>
-      <MainPage isGameChoosed={isGameChoosed} />
+      <GameSelectLayout isGameChoosed={isGameChoosed} />
       <ExpressionContainer args={args} operation={operation} isGameChoosed={isGameChoosed} />
       <AnswerInputContainer
         ref={ref}
