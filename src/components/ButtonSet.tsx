@@ -1,54 +1,41 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import getArguments from '../helpers/getRandomArguments';
-import { GameActionTypes } from '../types/game';
+import {
+  loadSumGame,
+  loadSubtractGame,
+  loadMultiplyGame,
+  loadDivideGame,
+  loadPowerGame,
+  loadRootGame,
+} from '../actionCreators/game';
+import { buttonLabelOperations } from '../const/const';
+import useTyepedSelector from '../hooks/useTypedSelector';
 
-export const OPERATIONS = {
-  sum: '+',
-  subtract: '-',
-  multiply: '*',
-  divide: '/',
-  degree: 'x2',
-  root: 'root',
-};
-
-const operationSigns = Object.values(OPERATIONS);
+const operationSigns = Object.values(buttonLabelOperations);
 
 function ButtonSet() {
   const dispatch = useDispatch();
-
-  function loadSumGame() {
-    dispatch({ type: GameActionTypes.SUM, payload: getArguments() });
-  }
-
-  function loadSubtractGame() {
-    dispatch({ type: GameActionTypes.SUBTRACT, payload: getArguments() });
-  }
-
-  function loadMultiplyGame() {
-    dispatch({ type: GameActionTypes.MULTIPLY, payload: getArguments() });
-  }
-
-  function loadDivideGame() {
-    dispatch({ type: GameActionTypes.DIVIDE, payload: getArguments() });
-  }
-
-  function loadDegreeGame() {
-    dispatch({ type: GameActionTypes.DEGREE, payload: getArguments() });
-  }
-
-  function loadRootGame() {
-    dispatch({ type: GameActionTypes.ROOT, payload: getArguments() });
-  }
-
-  const helpers = [
-    loadSumGame, loadSubtractGame, loadMultiplyGame, loadDivideGame, loadDegreeGame, loadRootGame,
+  const { game, settings } = useTyepedSelector((state) => state);
+  const actionCreators = [
+    loadSumGame, loadSubtractGame, loadMultiplyGame, loadDivideGame, loadPowerGame, loadRootGame,
   ];
+
+  const dispatchers = actionCreators.map((
+    actionCreator,
+  ) => () => dispatch(actionCreator(settings[game.operation as keyof typeof settings])));
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
       {
-    operationSigns.map((o, index) => <button key={o} type="button" onClick={helpers[index]}>{o}</button>)
+      operationSigns.map((operation, index) => (
+        <button
+          key={operation}
+          type="button"
+          onClick={dispatchers[index]}
+        >
+          {operation}
+        </button>
+      ))
     }
     </div>
   );

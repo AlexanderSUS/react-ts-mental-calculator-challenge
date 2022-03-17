@@ -1,22 +1,21 @@
 export type Arguments = [number, number];
+
 export interface GameState {
   isGameChoosed: boolean;
   isPlayed: boolean;
   args: Arguments;
-  operation: null | string;
+  operation: string;
 }
 
-export enum GameActionTypes {
-  SUM = 'SUM',
-  SUBTRACT = 'SUBTRACT',
-  MULTIPLY = 'MULTIPLY',
-  DIVIDE = 'DIVIDE',
-  DEGREE = 'DEGREE',
-  ROOT = 'ROOT',
-  GET_ANSWER = 'GET_ANSWER',
-  NEXT = 'NEXT',
-  EXIT = 'EXIT',
-}
+export const actionTypeSum = 'sum';
+export const actionTypeSubtract = 'subtract';
+export const actionTypeMultiply = 'multiply';
+export const actionTypeDivide = 'divide';
+export const actionTypePower = 'power';
+export const actionTypeRoot = 'root';
+export const actionTypeGetAnswer = 'get_answer';
+export const actionTypeNext = 'next';
+export const actionTypeExit = 'exit';
 
 interface GameQuestionActions <T> {
   type: T;
@@ -24,24 +23,24 @@ interface GameQuestionActions <T> {
 }
 
 interface GameNextAction {
-  type: GameActionTypes.NEXT;
+  type: typeof actionTypeNext;
   payload: Arguments;
 }
 
 interface GameExitAction {
-  type: GameActionTypes.EXIT;
+  type: typeof actionTypeExit;
 }
 
 interface GameGetAnswerAction {
-  type: GameActionTypes.GET_ANSWER,
+  type: typeof actionTypeGetAnswer,
 }
 
-export type GameAction = GameQuestionActions<GameActionTypes.SUM>
-| GameQuestionActions<GameActionTypes.SUBTRACT>
-| GameQuestionActions<GameActionTypes.MULTIPLY>
-| GameQuestionActions<GameActionTypes.DIVIDE>
-| GameQuestionActions<GameActionTypes.DEGREE>
-| GameQuestionActions<GameActionTypes.ROOT>
+export type GameAction = GameQuestionActions<typeof actionTypeSum>
+| GameQuestionActions<typeof actionTypeSubtract>
+| GameQuestionActions<typeof actionTypeMultiply>
+| GameQuestionActions<typeof actionTypeDivide>
+| GameQuestionActions<typeof actionTypePower>
+| GameQuestionActions<typeof actionTypeRoot>
 | GameNextAction
 | GameExitAction
 | GameGetAnswerAction;

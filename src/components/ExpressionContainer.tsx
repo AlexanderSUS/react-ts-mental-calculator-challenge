@@ -1,14 +1,13 @@
 import React from 'react';
 import { Arguments } from '../types/game';
-import { OPERATIONS } from './ButtonSet';
+import { OPERATIONS, buttonLabelOperations } from '../const/const';
 
 interface ExpressionContainerProps {
   args: Arguments;
-  operation: string | null;
+  operation: string;
   isGameChoosed: boolean;
 }
 
-// eslint-disable-next-line react/function-component-definition
 const ExpressionContainer: React.FC<ExpressionContainerProps> = ({
   args,
   operation,
@@ -17,25 +16,11 @@ const ExpressionContainer: React.FC<ExpressionContainerProps> = ({
   isGameChoosed
     ? (
       <>
-        {
-      (operation !== OPERATIONS.root)
-        ? (
-          <p>
-            {args[0]}
-            {' '}
-            {operation}
-            {' '}
-            {args[1]}
-          </p>
-        )
-        : (
-          <p>
-            {operation}
-            {' '}
-            {args[1]}
-          </p>
-        )
-}
+        <span>
+          { (operation !== OPERATIONS.root)
+            ? (`${args[0]} ${buttonLabelOperations[operation]} ${args[1]}`)
+            : (`${operation} ${args[0]}`) }
+        </span>
         <p>equals</p>
       </>
     )

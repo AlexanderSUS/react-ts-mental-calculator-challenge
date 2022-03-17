@@ -1,53 +1,41 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import getArguments from '../helpers/getRandomArguments';
-import { GameActionTypes } from '../types/game';
+import useTyepedSelector from '../hooks/useTypedSelector';
+import { actionTypeNext } from '../types/game';
 
 interface AnswerContainerProps {
-  isPlayed: boolean;
   isUserAnswerTrue: boolean;
   answer: number;
   userAnswer: number;
 }
 
-// eslint-disable-next-line react/function-component-definition
 const AnswerContainer: React.FC<AnswerContainerProps> = ({
-  isPlayed, isUserAnswerTrue, answer, userAnswer,
+  isUserAnswerTrue, answer, userAnswer,
 }) => {
+  const { game, settings } = useTyepedSelector((state) => state);
   const dispatch = useDispatch();
   const nextQuestion = () => {
-    dispatch({ type: GameActionTypes.NEXT, payload: getArguments() });
+    dispatch({
+      type: actionTypeNext,
+      payload: getArguments(settings[game.operation as keyof typeof settings]),
+    });
   };
 
   return (
     <>
-      {(isPlayed && isUserAnswerTrue)
-           && (
-             <>
-               <span>
-                 {answer}
-               </span>
-               <h4>Success!</h4>
-               <div>
-                 Your Answer =
-                 {userAnswer}
-               </div>
-               <button type="button" onClick={nextQuestion}>Next</button>
-             </>
-           )}
-      {(isPlayed && !isUserAnswerTrue)
-           && (
-             <>
-               <span>
-                 {answer}
-               </span>
-               <div>
-                 Your Answer =
-                 {userAnswer}
-               </div>
-               <button type="button" onClick={nextQuestion}>Next</button>
-             </>
-           )}
+      <span>
+        {answer}
+      </span>
+      {
+        isUserAnswerTrue
+        && <h4>Success!</h4>
+      }
+      <div>
+        Your Answer =
+        {userAnswer}
+      </div>
+      <button type="button" onClick={nextQuestion}>Next</button>
     </>
   );
 };

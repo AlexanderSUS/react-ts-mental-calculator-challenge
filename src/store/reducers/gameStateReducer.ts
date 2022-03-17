@@ -1,76 +1,87 @@
-import { GameAction, GameActionTypes, GameState } from '../../types/game';
-import { OPERATIONS } from '../../components/ButtonSet';
+import {
+  GameAction, GameState,
+  actionTypePower,
+  actionTypeDivide,
+  actionTypeExit,
+  actionTypeGetAnswer,
+  actionTypeMultiply,
+  actionTypeNext,
+  actionTypeRoot,
+  actionTypeSubtract,
+  actionTypeSum,
+} from '../../types/game';
+import { OPERATIONS } from '../../const/const';
 
-const initialState: GameState = {
+export const initialState: GameState = {
   isGameChoosed: false,
   isPlayed: false,
   args: [0, 0],
-  operation: null,
+  operation: 'sum',
 };
 
 // eslint-disable-next-line @typescript-eslint/default-param-last
 const gameReducer = (state: GameState = initialState, action: GameAction): GameState => {
   switch (action.type) {
-    case GameActionTypes.SUM:
+    case actionTypeSum:
       return {
         ...state,
         isGameChoosed: true,
         args: action.payload,
         operation: OPERATIONS.sum,
       };
-    case GameActionTypes.SUBTRACT:
+    case actionTypeSubtract:
       return {
         ...state,
         isGameChoosed: true,
         args: action.payload,
         operation: OPERATIONS.subtract,
       };
-    case GameActionTypes.MULTIPLY:
+    case actionTypeMultiply:
       return {
         ...state,
         isGameChoosed: true,
         args: action.payload,
         operation: OPERATIONS.multiply,
       };
-    case GameActionTypes.DIVIDE:
+    case actionTypeDivide:
       return {
         ...state,
         isGameChoosed: true,
         args: action.payload,
         operation: OPERATIONS.divide,
       };
-    case GameActionTypes.DEGREE:
+    case actionTypePower:
       return {
         ...state,
         isGameChoosed: true,
         args: action.payload,
-        operation: OPERATIONS.degree,
+        operation: OPERATIONS.power,
       };
-    case GameActionTypes.ROOT:
+    case actionTypeRoot:
       return {
         ...state,
         isGameChoosed: true,
         args: action.payload,
         operation: OPERATIONS.root,
       };
-    case GameActionTypes.GET_ANSWER:
+    case actionTypeGetAnswer:
       return {
         ...state, isPlayed: true,
       };
-    case GameActionTypes.NEXT:
+    case actionTypeNext:
       return {
         ...state,
         isGameChoosed: true,
         isPlayed: false,
         args: action.payload,
       };
-    case GameActionTypes.EXIT:
+    case actionTypeExit:
       return {
         ...state,
         isGameChoosed: false,
         isPlayed: false,
         args: [0, 0],
-        operation: null,
+        operation: OPERATIONS.sum,
       };
     default:
       return state;

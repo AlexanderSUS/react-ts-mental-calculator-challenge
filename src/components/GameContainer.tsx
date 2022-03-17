@@ -2,19 +2,18 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import getAnswer from '../helpers/answerHelper';
 import useTyepedSelector from '../hooks/useTypedSelector';
-import { GameActionTypes } from '../types/game';
+import { actionTypeGetAnswer } from '../types/game';
 import AnswerContainer from './AnswerContainer';
 import AnswerInputContainer from './AnswerInputContainer';
 import EscapeButton from './EscapeButton';
 import ExpressionContainer from './ExpressionContainer';
 import GameSelectLayout from './GameSelectLayout';
+import compareAnswers from '../helpers/compareAnswers';
 
 export type InputRef = HTMLInputElement;
 
-// eslint-disable-next-line react/function-component-definition
 const GameContainer: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
-  const compareAnswers = (right: number, user: number): boolean => right === user;
   const ref = useRef<HTMLInputElement>(null);
 
   const {
@@ -26,12 +25,12 @@ const GameContainer: React.FC = (): JSX.Element => {
 
   const [userAnswer, setUserAnswer] = useState(0);
   const [isUserAnswerTrue, setIsUserAnswerTrue] = useState(false);
-  const answer = getAnswer(operation as string, args);
+  const answer = Math.round(getAnswer(operation as string, args) * 10) / 10;
 
   const checkAnswer = () => {
     if (ref.current?.value) {
       setUserAnswer(Number(ref.current.value));
-      dispatch({ type: GameActionTypes.GET_ANSWER });
+      dispatch({ type: actionTypeGetAnswer });
     }
   };
 
@@ -49,12 +48,14 @@ const GameContainer: React.FC = (): JSX.Element => {
         isGameChoosed={isGameChoosed}
         isPlayed={isPlayed}
       />
+      {isPlayed
+      && (
       <AnswerContainer
-        isPlayed={isPlayed}
         isUserAnswerTrue={isUserAnswerTrue}
         answer={answer}
         userAnswer={userAnswer}
       />
+      )}
       <EscapeButton isGameChoosed={isGameChoosed} />
     </>
   );
