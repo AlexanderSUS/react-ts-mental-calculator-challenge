@@ -1,5 +1,7 @@
 import React from 'react';
+import { MathJax, MathJaxContext } from 'better-react-mathjax';
 import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
 import {
   loadSumGame,
   loadSubtractGame,
@@ -10,6 +12,12 @@ import {
 } from '../actionCreators/game';
 import { buttonLabelOperations } from '../const/const';
 import useTyepedSelector from '../hooks/useTypedSelector';
+
+const StyledOperationButton = styled.button`
+  width: 100px;
+  heght: 100px;
+  font-size: 2rem; 
+`;
 
 const operationSigns = Object.values(buttonLabelOperations);
 
@@ -25,16 +33,20 @@ function ButtonSet() {
   ) => () => dispatch(actionCreator(settings[game.operation as keyof typeof settings])));
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-around', gap: '1rem' }}>
       {
       operationSigns.map((operation, index) => (
-        <button
+        <StyledOperationButton
           key={operation}
           type="button"
           onClick={dispatchers[index]}
         >
-          {operation}
-        </button>
+          <MathJaxContext>
+            <MathJax>
+              {operation}
+            </MathJax>
+          </MathJaxContext>
+        </StyledOperationButton>
       ))
     }
     </div>

@@ -26,6 +26,6 @@ export const buttonLabelOperations: ButtonLabelOperationsType = {
   subtract: '-',
   multiply: '*',
   divide: '/',
-  power: 'x2',
-  root: 'root',
+  power: '$$x^{2}$$',
+  root: '$$\\sqrt{2}$$',
 };

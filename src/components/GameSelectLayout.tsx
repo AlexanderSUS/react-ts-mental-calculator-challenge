@@ -9,10 +9,10 @@ function GameSelectLayout({ isGameChoosed }: GameSelectLayoutProps): JSX.Element
   return (
     !isGameChoosed
       ? (
-        <>
-          <h1>Select math operation</h1>
+        <div>
+          <h1 style={{ marginTop: 0, textAlign: 'center', fontSize: '3rem' }}>Select math operation</h1>
           <ButtonSet />
-        </>
+        </div>
       )
       : null
 

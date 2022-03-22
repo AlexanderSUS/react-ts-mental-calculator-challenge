@@ -1,30 +1,22 @@
 import React from 'react';
+import { MathJax, MathJaxContext } from 'better-react-mathjax';
 import { Arguments } from '../types/game';
-import { OPERATIONS, buttonLabelOperations } from '../const/const';
+import getExpressionString from '../helpers/stringHelpers';
 
 interface ExpressionContainerProps {
   args: Arguments;
   operation: string;
-  isGameChoosed: boolean;
 }
 
 const ExpressionContainer: React.FC<ExpressionContainerProps> = ({
   args,
   operation,
-  isGameChoosed,
-}): JSX.Element | null => (
-  isGameChoosed
-    ? (
-      <>
-        <span>
-          { (operation !== OPERATIONS.root)
-            ? (`${args[0]} ${buttonLabelOperations[operation]} ${args[1]}`)
-            : (`${operation} ${args[0]}`) }
-        </span>
-        <p>equals</p>
-      </>
-    )
-    : null
+}): JSX.Element => (
+  <MathJaxContext>
+    <MathJax dynamic>
+      {getExpressionString(operation, ...args)}
+    </MathJax>
+  </MathJaxContext>
 );
 
 export default ExpressionContainer;

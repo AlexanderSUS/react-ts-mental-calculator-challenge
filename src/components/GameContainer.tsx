@@ -36,12 +36,13 @@ const GameContainer: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     setIsUserAnswerTrue(compareAnswers(answer, userAnswer));
-  }, [userAnswer, answer]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userAnswer]);
 
   return (
     <>
       <GameSelectLayout isGameChoosed={isGameChoosed} />
-      <ExpressionContainer args={args} operation={operation} isGameChoosed={isGameChoosed} />
+      {isGameChoosed && <ExpressionContainer args={args} operation={operation} /> }
       <AnswerInputContainer
         ref={ref}
         checkAnswer={checkAnswer}
